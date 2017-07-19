@@ -1,0 +1,19 @@
+version: '2'
+
+services: 
+  gitlab:
+    image: gitlab:gitlab-ce:latest
+    container_name: gitlab
+    network_mode: bridge
+    volumes:
+    - ./data/config:/etc/gitlab:Z
+    - ./data/logs:/var/log/gitlab:Z
+    - ./data/data:/var/opt/gitlab:Z
+    - ./certbot/data/etc/live/registry.shintech.ninja}}:/certbot/live/registry.shintech.ninja:ro
+# Required since live files are actually symlinks to archive
+    - ./certbot/data/etc/archive/registry.shintech.ninja:/certbot/archive/registry.shintech.ninja:ro    
+    env_file: 
+      - ./gitlab.env
+    ports: 
+      - 0.0.0.0:22:22
+    restart: always
